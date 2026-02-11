@@ -5,7 +5,7 @@ import requests
 import json
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": ["https://your-site.netlify.app", "http://localhost:3000"]}})
 
 BASE_URL = "https://erp.akgec.ac.in"
 
