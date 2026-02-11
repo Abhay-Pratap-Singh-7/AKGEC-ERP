@@ -6,7 +6,7 @@ interface Props {
   onLogin: (student: Student) => void;
 }
 
-const API_BASE_URL = 'https://abhay958.pythonanywhere.com';
+const API_BASE_URL = 'http://127.0.0.1:5000/api';
 
 const Login: React.FC<Props> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -48,19 +48,19 @@ const Login: React.FC<Props> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#fcfcfd]">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-slate-950">
       <div className="w-full max-w-sm animate-fade-in">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-200 mb-6">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-900/20 mb-6">
             <i className="fa-solid fa-feather-pointed text-xl"></i>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Portal</h1>
-          <p className="text-sm text-gray-500 mt-1">Authenticate to synchronize records</p>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Portal</h1>
+          <p className="text-sm text-slate-400 mt-1">Authenticate to synchronize records</p>
         </div>
 
-        <div className="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/50">
+        <div className="bg-slate-900 rounded-[2rem] p-8 border border-slate-800 transition-all duration-300">
           {error && (
-            <div className="mb-6 p-3 bg-red-50 text-red-600 text-xs font-semibold rounded-xl text-center border border-red-100">
+            <div className="mb-6 p-3 bg-red-950/30 text-red-400 text-xs font-semibold rounded-xl text-center border border-red-900/30">
               {error}
             </div>
           )}
@@ -70,7 +70,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
               <input
                 type="text"
                 required
-                className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all outline-none text-sm font-medium"
+                className="w-full px-5 py-4 bg-slate-950 border border-slate-800 rounded-2xl focus:bg-slate-950 focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none text-sm font-medium text-white"
                 placeholder="Student ID"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -81,7 +81,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
               <input
                 type="password"
                 required
-                className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600 transition-all outline-none text-sm font-medium"
+                className="w-full px-5 py-4 bg-slate-950 border border-slate-800 rounded-2xl focus:bg-slate-950 focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none text-sm font-medium text-white"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -91,14 +91,14 @@ const Login: React.FC<Props> = ({ onLogin }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gray-900 text-white rounded-2xl font-semibold text-sm hover:bg-black transition-all transform active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-gray-200"
+              className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-semibold text-sm hover:bg-indigo-700 transition-all transform active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-indigo-950/40"
             >
               {loading ? 'Authenticating...' : 'Sign In'}
             </button>
           </form>
         </div>
 
-        <p className="mt-12 text-center text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em]">
+        <p className="mt-12 text-center text-[10px] text-slate-600 font-bold uppercase tracking-[0.2em]">
           AKGEC Student Systems
         </p>
       </div>

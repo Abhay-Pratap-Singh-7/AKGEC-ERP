@@ -1,11 +1,25 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AKGEC Student Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              slate: {
+                950: '#020617',
+              }
+            }
+          }
+        }
+      }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -14,11 +28,15 @@
         --primary: #4f46e5;
       }
 
-      body {
+      html, body {
         font-family: 'Inter', sans-serif;
-        background-color: #fcfcfd;
-        color: #1a1a1a;
+        background-color: #020617; /* Dark slate 950 */
+        color: #f8fafc;
         -webkit-font-smoothing: antialiased;
+        overscroll-behavior: none; /* Prevents the "bounce" white flash */
+        margin: 0;
+        height: 100%;
+        overflow-x: hidden;
       }
 
       @keyframes fadeInUp {
@@ -30,23 +48,23 @@
         animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
-      /* Custom scrollbar */
+      /* Custom scrollbar for dark theme */
       ::-webkit-scrollbar {
         width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: transparent;
+        background: #020617;
       }
       ::-webkit-scrollbar-thumb {
-        background: #e2e8f0;
+        background: #1e293b;
         border-radius: 10px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #cbd5e1;
+        background: #334155;
       }
 
       input::placeholder {
-        color: #94a3b8;
+        color: #475569;
         font-weight: 400;
       }
     </style>

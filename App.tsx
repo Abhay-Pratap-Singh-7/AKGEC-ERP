@@ -9,6 +9,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Ensure the document always has the dark class
+    document.documentElement.classList.add('dark');
+    
     const accessToken = localStorage.getItem('access_token');
     const userId = localStorage.getItem('user_id');
     const contextId = localStorage.getItem('context_id');
@@ -43,14 +46,14 @@ const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="flex h-screen items-center justify-center bg-slate-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-950 transition-colors duration-500 overflow-x-hidden">
       {!user ? (
         <Login onLogin={handleLogin} />
       ) : (
