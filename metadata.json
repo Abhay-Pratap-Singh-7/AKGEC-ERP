@@ -1,0 +1,5 @@
+{
+  "name": "AKGEC Attendance Dashboard",
+  "description": "A high-performance student portal for tracking AKGEC ERP attendance with real-time bunk calculations and AI insights.",
+  "requestFramePermissions": []
+}
