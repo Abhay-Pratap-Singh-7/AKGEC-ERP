@@ -6,7 +6,7 @@ interface Props {
   onLogin: (student: Student) => void;
 }
 
-const API_BASE_URL = 'http://127.0.0.1:5000/api';
+const API_BASE_URL = 'https://akgec-attendance-api.onrender.com/api';
 
 const Login: React.FC<Props> = ({ onLogin }) => {
   const [username, setUsername] = useState('');

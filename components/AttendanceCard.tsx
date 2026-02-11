@@ -9,95 +9,101 @@ interface Props {
 }
 
 const AttendanceCard: React.FC<Props> = ({ subject, onClick, isActive }) => {
-  const { present, total, percentage } = subject;
+  const { present, total, percentage, subjectName, subjectCode } = subject;
   
   const isAtRisk = percentage < 75;
   const isNearRisk = !isAtRisk && percentage <= 80;
   
   const statusColor = isAtRisk ? 'red' : isNearRisk ? 'amber' : 'emerald';
-  const colors: Record<string, string> = {
-    red: 'bg-red-500 text-red-400 border-red-900/30',
-    amber: 'bg-amber-500 text-amber-400 border-amber-900/30',
-    emerald: 'bg-emerald-500 text-emerald-400 border-emerald-900/30'
+  const colorMap: Record<string, { text: string, bg: string, border: string, ring: string }> = {
+    red: { 
+      text: 'text-red-400', 
+      bg: 'bg-red-500/10', 
+      border: 'border-red-500/40',
+      ring: 'ring-red-500/20'
+    },
+    amber: { 
+      text: 'text-amber-400', 
+      bg: 'bg-amber-500/10', 
+      border: 'border-amber-500/40',
+      ring: 'ring-amber-500/20'
+    },
+    emerald: { 
+      text: 'text-emerald-400', 
+      bg: 'bg-emerald-500/10', 
+      border: 'border-emerald-500/40',
+      ring: 'ring-emerald-500/20'
+    }
   };
 
   const getBunkMsg = () => {
     if (isAtRisk) {
       const x = Math.ceil((0.75 * total - present) / 0.25);
-      return { text: `Need ${x} class${x > 1 ? 'es' : ''} for 75%`, type: 'urgent' };
+      return `Critical: Attend ${x} more session${x > 1 ? 's' : ''} to reach 75%.`;
     }
     const x = Math.floor((present - 0.75 * total) / 0.75);
-    return { 
-      text: x > 0 ? `Can safely bunk ${x} class${x > 1 ? 'es' : ''}` : 'Crucial next class',
-      type: 'safe'
-    };
+    return x > 0 
+      ? `Safe: You can safely bunk ${x} more class${x > 1 ? 'es' : ''}.` 
+      : `Warning: On the margin. Next session is mandatory.`;
   };
 
-  const bunk = getBunkMsg();
+  const firstLetter = subjectName.charAt(0).toUpperCase();
 
   return (
     <div 
       onClick={onClick}
-      className={`group relative overflow-hidden bg-slate-900 p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer active:scale-[0.98] ${isActive ? 'border-indigo-500 shadow-2xl shadow-indigo-950/40 ring-1 ring-indigo-500/20' : 'border-slate-800 hover:border-slate-700 hover:shadow-xl hover:shadow-slate-950/50'}`}
+      className={`group relative flex flex-col h-full bg-slate-900 rounded-[2.5rem] border transition-all duration-500 cursor-pointer active:scale-[0.98] ${isActive ? 'border-indigo-500 shadow-2xl shadow-indigo-950/50 ring-2 ring-indigo-500/10' : `${colorMap[statusColor].border} hover:shadow-2xl hover:shadow-slate-950/60`}`}
     >
-      {/* Visual Status Indicator Strip */}
-      <div className={`absolute top-0 left-0 w-1.5 h-full ${isAtRisk ? 'bg-red-500' : isNearRisk ? 'bg-amber-500' : 'bg-emerald-500'} opacity-50`}></div>
-
-      <div className="flex justify-between items-start mb-8">
-        <div className="flex-1 min-w-0 pr-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span className={`w-2 h-2 rounded-full ${isAtRisk ? 'bg-red-500' : isNearRisk ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`}></span>
-            <p className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">
-              {subject.subjectCode}
-            </p>
+      <div className="flex flex-col flex-1 p-8">
+        {/* Header: Logo and Status Badge */}
+        <div className="flex justify-between items-start mb-6">
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black ${colorMap[statusColor].bg} ${colorMap[statusColor].text} border ${colorMap[statusColor].border} shadow-inner`}>
+            {firstLetter}
           </div>
-          <h3 className="text-[15px] font-bold text-slate-100 leading-tight group-hover:text-white transition-colors duration-300">
-            {subject.subjectName}
+          <div className="px-4 py-1.5 rounded-xl bg-slate-800/50 border border-slate-700 text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:bg-slate-800 group-hover:text-slate-200 transition-colors">
+            {isAtRisk ? 'At Risk' : isNearRisk ? 'Warning' : 'Safe'}
+          </div>
+        </div>
+
+        {/* Content: Subject Title and Subtitle */}
+        <div className="mb-4">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+            {subjectCode}
+          </p>
+          <h3 className="text-lg font-bold text-slate-100 leading-tight group-hover:text-white transition-colors">
+            {subjectName}
           </h3>
         </div>
-        <div className="text-right">
-          <p className={`text-2xl font-black tracking-tighter ${colors[statusColor].split(' ')[1]}`}>
-            {percentage.toFixed(1)}<span className="text-xs ml-0.5 opacity-60">%</span>
+
+        {/* Insight Paragraph */}
+        <div className="mb-8 flex-1">
+          <p className="text-[11px] leading-relaxed text-slate-500 font-medium group-hover:text-slate-400 transition-colors">
+            {getBunkMsg()}
           </p>
-          {!isActive && (
-             <p className="text-[8px] font-black text-slate-600 uppercase tracking-widest mt-1">View Timeline</p>
-          )}
         </div>
-      </div>
 
-      <div className="grid grid-cols-2 gap-8 mb-8">
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5">
-            <i className="fa-solid fa-check-circle text-[10px] text-slate-700"></i>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Present</p>
+        {/* Footer: Stats Section inspired by Airbnb bottom row */}
+        <div className="pt-6 border-t border-slate-800 flex items-end justify-between">
+          <div className="flex flex-col">
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Current %</span>
+            <span className={`text-2xl font-black tracking-tighter ${colorMap[statusColor].text}`}>
+              {percentage.toFixed(1)}<span className="text-xs ml-0.5 opacity-60">%</span>
+            </span>
           </div>
-          <p className="text-2xl font-black text-slate-100">{present}</p>
-        </div>
-        <div className="space-y-1 text-right">
-          <div className="flex items-center justify-end gap-1.5">
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Held</p>
-            <i className="fa-solid fa-layer-group text-[10px] text-slate-700"></i>
+          
+          <div className="flex flex-col items-end">
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest mb-1">Fractions</span>
+            <div className="px-5 py-2.5 rounded-2xl bg-slate-950 border border-slate-800 text-xs font-black text-slate-200 group-hover:border-slate-700 transition-all">
+              {present} <span className="text-slate-700">/</span> {total}
+            </div>
           </div>
-          <p className="text-2xl font-black text-slate-100">{total}</p>
         </div>
       </div>
 
-      <div className="relative w-full h-2 bg-slate-950 rounded-full overflow-hidden mb-6">
-        <div 
-          className={`h-full ${isAtRisk ? 'bg-red-500' : isNearRisk ? 'bg-amber-500' : 'bg-emerald-500'} shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all duration-1000 ease-out`}
-          style={{ width: `${percentage}%` }}
-        />
-        {/* 75% Marker Line */}
-        <div className="absolute left-[75%] top-0 w-px h-full bg-slate-700/50"></div>
-      </div>
-
-      <div className={`py-4 px-5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center border transition-all duration-300 ${bunk.type === 'urgent' ? 'bg-red-950/20 border-red-900/30 text-red-400' : 'bg-slate-950 border-slate-800 text-slate-400 group-hover:text-indigo-400 group-hover:border-indigo-900/30 group-hover:bg-indigo-950/10'}`}>
-        {bunk.text}
-      </div>
-
+      {/* Active Selection Glow */}
       {isActive && (
-        <div className="absolute bottom-4 right-4 animate-bounce">
-          <i className="fa-solid fa-chevron-down text-indigo-500 text-xs"></i>
+        <div className="absolute top-4 right-4 animate-pulse">
+          <div className="w-2 h-2 bg-indigo-500 rounded-full shadow-[0_0_12px_rgba(99,102,241,0.8)]"></div>
         </div>
       )}
     </div>
